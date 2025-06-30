@@ -6,14 +6,19 @@ import google.generativeai as genai
 import streamlit as st
 
 # Ensure your GOOGLE_API_KEY is set in the environment
-GOOGLE_API_KEY = ""
+GOOGLE_API_KEY = "AIzaSyCDRTBF2vQo2p4e3Pf6rcq7kMms4maTpVA"
 os.environ["GOOGLE_API_KEY"] = GOOGLE_API_KEY
 st.title('Welcome to StudyBot')
 
 genai.configure(api_key=GOOGLE_API_KEY)
 
-# Load documents
-documents = SimpleDirectoryReader(input_files=["IEEE.pdf"]).load_data(show_progress=True)
+# Upload a file
+uploaded_file = st.file_uploader("Choose a document", type=["pdf", "docx", "txt"])
+
+if uploaded_file is not None:
+    st.write("Filename:", uploaded_file.name)
+
+documents = SimpleDirectoryReader(input_files=uploaded_file).load_data(show_progress=True)
 
 # Define embedding model
 Settings.embed_model = HuggingFaceEmbedding(model_name="BAAI/bge-base-en-v1.5")
